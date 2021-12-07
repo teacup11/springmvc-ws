@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.app.ws.mobileappws.ui.controller;
+package com.appsdeveloperblog.app.ws.ui.controller;
 
 
 import org.springframework.web.bind.annotation.*;
