@@ -17,7 +17,7 @@ public class UserEntity implements Serializable {
 
 
     @Column(nullable=false)
-    private String userId;
+    private String userId; // user id which is safe to pass around the network
 
     @Column(nullable=false, length = 50)
     private String firstname;
@@ -33,8 +33,8 @@ public class UserEntity implements Serializable {
 
     private String emailVerificationToken;
 
-    @Column(nullable=false, columnDefinition = "boolean default false")
-    private Boolean emailVerificationStatus;
+    @Column(nullable=false)
+    private Boolean emailVerificationStatus = false;
 
     public long getId() {
         return id;
