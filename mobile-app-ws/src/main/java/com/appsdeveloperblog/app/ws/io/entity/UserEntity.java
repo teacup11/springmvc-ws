@@ -20,10 +20,10 @@ public class UserEntity implements Serializable {
     private String userId; // user id which is safe to pass around the network
 
     @Column(nullable=false, length = 50)
-    private String firstname;
+    private String firstName;
 
     @Column(nullable=false, length = 50)
-    private String lastname;
+    private String lastName;
 
     @Column(nullable=false, length = 120)
     private String email;
@@ -52,20 +52,20 @@ public class UserEntity implements Serializable {
         this.userId = userId;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
