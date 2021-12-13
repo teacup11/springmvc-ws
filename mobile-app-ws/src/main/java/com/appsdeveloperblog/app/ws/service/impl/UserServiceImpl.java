@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
         //generate public user id
         String publicUserId = utils.generateUserId(30);
 
-        //for now hardcoded properties
-        userEntity.setEncryptedPassword("test");
+        //use the encode method and as a paramater use the password that user provided
+        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setUserId(publicUserId);
 
         //ready to save info into a database
