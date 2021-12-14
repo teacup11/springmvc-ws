@@ -13,7 +13,7 @@ public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue
-    private long id; // autoincremented primary key
+    private long id; // autoincrement primary key
 
 
     @Column(nullable=false)
