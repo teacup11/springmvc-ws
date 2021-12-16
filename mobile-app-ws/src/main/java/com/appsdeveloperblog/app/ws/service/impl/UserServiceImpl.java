@@ -123,6 +123,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsers(int page, int limit) {
 
+        //we want page to start with 1 not 0
+        if(page>0) page-=1;
+
         List<UserDto> returnValue = new ArrayList<>();
 
         //create pageable object
