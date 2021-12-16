@@ -62,6 +62,11 @@ public class UserController {
 
         OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.DELETE.name()); // we can hardcode it to "DELETE" or create enum
+
+        // attempt to delete user details
+        userService.deleteUser(id);
+
+        // successful delete, return message
         returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
 
         return returnValue;

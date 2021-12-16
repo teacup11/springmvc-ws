@@ -83,8 +83,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(String userId, UserDto user) {
 
-        // first we read the record from the database
         UserDto returnValue = new UserDto();
+        // first we read the record from the database
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -98,6 +98,20 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(updatedUserDetails, returnValue);
 
         return returnValue;
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+
+        // first we read the record from the database
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if(userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        //the record is found delete the user
+        userRepository.delete(userEntity);
+
+
     }
 
     @Override
