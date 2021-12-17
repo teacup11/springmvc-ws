@@ -2,15 +2,18 @@ package com.appsdeveloperblog.app.ws.ui.controller;
 
 
 import com.appsdeveloperblog.app.ws.service.UserService;
+import com.appsdeveloperblog.app.ws.shared.dto.AddressDTO;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,10 @@ public class UserController {
         UserRest returnValue = new UserRest();
 
         UserDTO userDto = userService.getUserByUserId(id);
-        BeanUtils.copyProperties(userDto, returnValue);
+        //BeanUtils.copyProperties(userDto, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
+        returnValue = modelMapper.map(userDto, UserRest.class);
+
 
         return returnValue;
     }
@@ -94,6 +100,27 @@ public class UserController {
             UserRest userModel = new UserRest();
             BeanUtils.copyProperties(userDto, userModel);
             returnValue.add(userModel);
+        }
+
+        return returnValue;
+    }
+
+    // get list of addresses for specific user endpoint
+    // http://localhost:8080/mobile-app-ws/users/fjff9j9cj49je8/addresses
+    @GetMapping(path = "/{id}/addresses", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public List<AddressesRest> getUserAddresses(@PathVariable String id) {
+
+        List<AddressesRest> returnValue = new ArrayList<>();
+
+        List<AddressDTO> addressesDTO = addressesService.getAddresses(id);
+
+        if(addressesDTO != null && !addressesDTO.isEmpty()) {
+
+            //use model mapper to map lists
+            Type listType = new TypeToken<List<AddressesRest>>() {}.getType();
+            ModelMapper modelMapper = new ModelMapper();
+            returnValue = modelMapper.map(addressesDTO, listType);
+
         }
 
         return returnValue;
