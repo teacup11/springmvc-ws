@@ -129,4 +129,17 @@ public class UserController {
 
         return returnValue;
     }
+
+    // API Call to Get a Single Address Details
+    @GetMapping(path = "/{userId}/addresses/{addressId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public AddressesRest getUserAddress(@PathVariable String addressId){
+
+        AddressDTO addressDTO = addressService.getAddress(addressId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(addressDTO, AddressesRest.class);
+
+    }
+
 }
