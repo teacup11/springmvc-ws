@@ -5,7 +5,7 @@ import com.appsdeveloperblog.app.ws.io.repositories.UserRepository;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.service.UserService;
 import com.appsdeveloperblog.app.ws.shared.Utils;
-import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
+import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDto createUser(UserDto user) {
+    public UserDTO createUser(UserDTO user) {
 
         //checking if record is in the database before saving it
         if (userRepository.findByEmail(user.getEmail()) != null)
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         //ready to save info into a database
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
-        UserDto returnValue = new UserDto();
+        UserDTO returnValue = new UserDTO();
         BeanUtils.copyProperties(storedUserDetails, returnValue);
 
 
@@ -63,19 +63,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(String email) {
+    public UserDTO getUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email);
 
         if(userEntity == null) throw new UsernameNotFoundException(email);
 
-        UserDto returnValue = new UserDto();
+        UserDTO returnValue = new UserDTO();
         BeanUtils.copyProperties(userEntity, returnValue);
         return returnValue;
     }
 
     @Override
-    public UserDto getUserByUserId(String userId) {
-        UserDto returnValue = new UserDto();
+    public UserDTO getUserByUserId(String userId) {
+        UserDTO returnValue = new UserDTO();
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -86,9 +86,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(String userId, UserDto user) {
+    public UserDTO updateUser(String userId, UserDTO user) {
 
-        UserDto returnValue = new UserDto();
+        UserDTO returnValue = new UserDTO();
         // first we read the record from the database
         UserEntity userEntity = userRepository.findByUserId(userId);
 
@@ -121,12 +121,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsers(int page, int limit) {
+    public List<UserDTO> getUsers(int page, int limit) {
 
         //we want page to start with 1 not 0
         if(page>0) page-=1;
 
-        List<UserDto> returnValue = new ArrayList<>();
+        List<UserDTO> returnValue = new ArrayList<>();
 
         //create pageable object
         Pageable pageableRequest = PageRequest.of(page, limit);
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
 
         //create a list of user dtos
         for (UserEntity userEntity : users) {
-            UserDto userDto= new UserDto();
+            UserDTO userDto= new UserDTO();
             BeanUtils.copyProperties(userEntity, userDto);
             returnValue.add(userDto);
         }

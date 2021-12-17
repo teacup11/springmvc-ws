@@ -3,7 +3,7 @@ package com.appsdeveloperblog.app.ws.shared.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserDto implements Serializable {
+public class UserDTO implements Serializable {
     private static final long serialVersionUID = 6835192601898364280L; //dto has a certain design pattern, implement
     private long id; //value from the database ID - autoincrement ID
     private String userId; //public user ID, which we returned to the application and it can be stored and passed around the network

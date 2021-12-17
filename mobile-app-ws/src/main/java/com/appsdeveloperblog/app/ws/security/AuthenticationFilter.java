@@ -2,7 +2,7 @@ package com.appsdeveloperblog.app.ws.security;
 
 import com.appsdeveloperblog.app.ws.SpringApplicationContext;
 import com.appsdeveloperblog.app.ws.service.UserService;
-import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
+import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserLoginRequestModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -65,7 +65,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         // use spring application context to get user service implementation bean so that we can get user details
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
-        UserDto userDto = userService.getUser(userName);
+        UserDTO userDto = userService.getUser(userName);
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         res.addHeader("UserID", userDto.getUserId());
