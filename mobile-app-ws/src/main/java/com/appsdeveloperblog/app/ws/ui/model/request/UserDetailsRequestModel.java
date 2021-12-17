@@ -1,5 +1,7 @@
 package com.appsdeveloperblog.app.ws.ui.model.request;
 
+import java.util.List;
+
 public class UserDetailsRequestModel {
 
     private String firstName;
