@@ -5,8 +5,10 @@ import com.appsdeveloperblog.app.ws.io.repositories.UserRepository;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.service.UserService;
 import com.appsdeveloperblog.app.ws.shared.Utils;
+import com.appsdeveloperblog.app.ws.shared.dto.AddressDTO;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,8 +44,19 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new RuntimeException("Record already exists");
 
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
+
+        // go through list of addresses and update address objects
+        for(int i=0; i<user.getAddresses().size(); i++) {
+            AddressDTO address = user.getAddresses().get(i);
+            address.setUserDetails(user);
+            address.setAddressId(utils.generateAddressId(30));
+            user.getAddresses().set(i, address);
+        }
+
+        //UserEntity userEntity = new UserEntity();
+        //BeanUtils.copyProperties(user, userEntity);
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
         //generate public user id
         String publicUserId = utils.generateUserId(30);
@@ -55,9 +68,9 @@ public class UserServiceImpl implements UserService {
         //ready to save info into a database
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
-        UserDTO returnValue = new UserDTO();
-        BeanUtils.copyProperties(storedUserDetails, returnValue);
-
+        //UserDTO returnValue = new UserDTO();
+        //BeanUtils.copyProperties(storedUserDetails, returnValue);
+        UserDTO returnValue = modelMapper.map(storedUserDetails, UserDTO.class);
 
         return returnValue;
     }
