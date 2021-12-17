@@ -88,11 +88,11 @@ public class UserDTO implements Serializable {
         this.emailVerificationStatus = emailVerificationStatus;
     }
 
-    public List<AdressDTO> getAddresses() {
+    public List<AddressDTO> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<AdressDTO> addresses) {
+    public void setAddresses(List<AddressDTO> addresses) {
         this.addresses = addresses;
     }
 }
