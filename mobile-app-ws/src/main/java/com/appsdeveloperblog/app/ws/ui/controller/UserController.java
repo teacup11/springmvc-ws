@@ -130,6 +130,14 @@ public class UserController {
             ModelMapper modelMapper = new ModelMapper();
             returnValue = modelMapper.map(addressesDTO, listType);
 
+            // adding links to embedded list of addresses
+            for (AddressesRest addressesRest : returnValue) {
+                Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                        .getUserAddress(id, addressesRest.getAddressId()))
+                        .withSelfRel();
+                addressesRest.add(selfLink);
+            }
+
         }
 
         //LINKS
