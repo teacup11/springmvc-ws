@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -116,7 +117,7 @@ public class UserController {
     // get list of addresses for specific user endpoint
     // http://localhost:8080/mobile-app-ws/users/fjff9j9cj49je8/addresses
     @GetMapping(path = "/{id}/addresses", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<AddressesRest> getUserAddresses(@PathVariable String id) {
+    public CollectionModel<AddressesRest> getUserAddresses(@PathVariable String id) {
 
         List<AddressesRest> returnValue = new ArrayList<>();
 
@@ -131,7 +132,15 @@ public class UserController {
 
         }
 
-        return returnValue;
+        //LINKS
+        // link to get user resource
+        Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(id).withRel("user");
+        // link to self
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                .getUserAddresses(id))
+                .withSelfRel();
+
+        return CollectionModel.of(returnValue, userLink, selfLink);
     }
 
     // API Call to Get a Single Address Details
