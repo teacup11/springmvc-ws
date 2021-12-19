@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -134,7 +136,7 @@ public class UserController {
 
     // API Call to Get a Single Address Details
     @GetMapping(path = "/{userId}/addresses/{addressId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public AddressesRest getUserAddress(@PathVariable String userId, @PathVariable String addressId){
+    public EntityModel<AddressesRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId){
 
         AddressDTO addressDTO = addressService.getAddress(addressId);
 
@@ -142,6 +144,7 @@ public class UserController {
         AddressesRest returnValue = modelMapper.map(addressDTO, AddressesRest.class);
 
         // LINKS
+        // adding links - representation model
         // link to get user resource http://localhost:8080/users/<userId>
         Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user"); // this is why we made this method to also accept user id path variable
         // link to list all user addresses  http://localhost:8080/users/<userId>/addresses
@@ -157,11 +160,14 @@ public class UserController {
                 .withSelfRel();
 
         // add the links to return value
-        returnValue.add(userLink);
-        returnValue.add(userAddressesLink);
-        returnValue.add(selfLink);
+        //returnValue.add(userLink);
+        //returnValue.add(userAddressesLink);
+        //returnValue.add(selfLink);
 
-        return returnValue;
+        // adding links - entity model
+        // EntityModel.of(returnValue, Arrays.asList(userLink, userAddressesLink, selfLink));
+
+        return EntityModel.of(returnValue, Arrays.asList(userLink, userAddressesLink, selfLink));
 
     }
 
