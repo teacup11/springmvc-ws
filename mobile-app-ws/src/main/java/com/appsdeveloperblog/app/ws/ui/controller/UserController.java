@@ -148,15 +148,15 @@ public class UserController {
         // link to get user resource http://localhost:8080/users/<userId>
         Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user"); // this is why we made this method to also accept user id path variable
         // link to list all user addresses  http://localhost:8080/users/<userId>/addresses
-        Link userAddressesLink = WebMvcLinkBuilder.linkTo(UserController.class)
-                .slash(userId)
-                .slash("addresses")
+        Link userAddressesLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddresses(userId))
+                //.slash(userId)
+                //.slash("addresses")
                 .withRel("addresses");
         // self link  http://localhost:8080/users/<userId>/addresses/<addressId>
-        Link selfLink = WebMvcLinkBuilder.linkTo(UserController.class)
-                .slash(userId)
-                .slash("addresses")
-                .slash(addressId)
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddress(userId, addressId))
+                //.slash(userId)
+                //.slash("addresses")
+                //.slash(addressId)
                 .withSelfRel();
 
         // add the links to return value
