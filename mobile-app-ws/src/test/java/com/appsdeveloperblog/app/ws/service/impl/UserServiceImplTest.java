@@ -61,7 +61,7 @@ class UserServiceImplTest {
         userEntity.setEncryptedPassword(encryptedPassword);
         userEntity.setEmail("test@test.com");
         userEntity.setAddresses(getAddressesEntity());
-
+        userEntity.setEmailVerificationToken("7htnfhr758");
     }
 
     // TESTS GET USER METHOD
