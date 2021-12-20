@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         //checking if record is in the database before saving it
         if (userRepository.findByEmail(user.getEmail()) != null)
-            throw new RuntimeException("Record already exists");
+            throw new UserServiceException("Record already exists");
 
 
         // go through list of addresses and update address objects
