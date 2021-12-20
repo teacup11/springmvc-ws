@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -44,6 +45,23 @@ class UserServiceImplTest {
         assertNotNull(userDTO);
         assertEquals("Mojca", userDTO.getFirstName());
 
+    }
+
+    //Expect an exception user name not found
+    @Test
+    final void testGetUser_UsernameNotFoundException() {
+
+        // when find by email is called on user repository, and it returns null
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+
+        assertThrows(UsernameNotFoundException.class,
+
+                //lambda expression
+                ()-> {
+                    userService.getUser("test@test.com");
+                }
+
+                );
     }
 
 }
