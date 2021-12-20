@@ -1,5 +1,6 @@
 package com.appsdeveloperblog.app.ws.service.impl;
 
+import com.appsdeveloperblog.app.ws.exceptions.UserServiceException;
 import com.appsdeveloperblog.app.ws.io.entity.AddressEntity;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.io.repositories.UserRepository;
@@ -129,6 +130,29 @@ class UserServiceImplTest {
         verify(bCryptPasswordEncoder, times(1)).encode("8de9c8893");
         //verify(userRepository, times(1)).save(any(UserEntity.class));
 
+    }
+
+    // when it throws an exception
+    @Test
+    final void testCreateUser_CreateUserServiceException() {
+
+        when(userRepository.findByEmail(anyString())).thenReturn(userEntity);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAddresses(getAddressesDTO());
+        userDTO.setFirstName("Mojca");
+        userDTO.setLastName("Pokraculja");
+        userDTO.setPassword("8de9c8893");
+        userDTO.setEmail("test@test.com");
+
+        assertThrows(UserServiceException.class,
+
+                //lambda expression
+                ()-> {
+                    userService.createUser(userDTO);
+                }
+
+        );
     }
 
     private List<AddressDTO> getAddressesDTO() {
