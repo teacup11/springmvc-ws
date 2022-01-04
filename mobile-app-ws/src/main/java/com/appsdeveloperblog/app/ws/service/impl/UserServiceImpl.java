@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         //ready to save info into a database
-        UserEntity storedUserDetails = userRepository.save(userEntity);
+        UserEntity storedUserDetails = userRepository.saveAndFlush(userEntity);
 
         //UserDTO returnValue = new UserDTO();
         //BeanUtils.copyProperties(storedUserDetails, returnValue);
